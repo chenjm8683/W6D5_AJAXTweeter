@@ -1,12 +1,19 @@
-function FollowToggle($el) {
-  // debugger;
-  this.$el = $el;
-  this.userId = parseInt($el.data("user-id"));
-  this.followStatus = $el.data("follow-status");
+function FollowToggle(el, options) {
+  this.$el = $(el);
+  this.userId = parseInt(this.$el.data("user-id")) || options.userId;
+  this.followStatus = this.$el.data("follow-status")
+                    || this.parseStatus(options.followStatus);
   this.render();
   this.registerEvent();
-  // console.log("it works!");
 }
+
+  FollowToggle.prototype.parseStatus = function (status) {
+    if(status){
+      return "followed";
+    } else {
+      return "unfollowed";
+    }
+  };
 
 FollowToggle.prototype.registerEvent = function () {
   this.$el.on("click", this.handleClick.bind(this));

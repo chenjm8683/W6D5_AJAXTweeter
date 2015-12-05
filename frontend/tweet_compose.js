@@ -1,7 +1,8 @@
 function TweetCompose(el) {
   this.$el = $(el);
   this.$content = this.$el.find('textarea');
-  this.$mention = this.$el.find('select')
+  this.$mention = this.$el.find('select');
+  this.$charsLeftLabel = this.$el.find('.chars-left');
   this.$feed = $('#feed');
 
   this.registerEvent();
@@ -12,6 +13,7 @@ function TweetCompose(el) {
 
 
 TweetCompose.prototype.registerEvent = function () {
+  this.$content.on("input", this.handleInput.bind(this));
   this.$el.on("submit", this.handleSubmit.bind(this));
 };
 
@@ -20,6 +22,12 @@ TweetCompose.prototype.clearInput = function () {
   this.$content.val("");
   this.$mention.val(0);
 
+};
+
+TweetCompose.prototype.handleInput = function (e) {
+  var content = e.target.value;
+  var charsLeft = 140 - content.length;
+  this.$charsLeftLabel.text(charsLeft + " characters remaining.");
 };
 
 
@@ -42,8 +50,10 @@ TweetCompose.prototype.handleSubmit = function (e) {
   });
 };
 
+
+
 TweetCompose.prototype.handleSuccess = function (message) {
-  // body...
+
     this.clearInput();
     this.$el.find(":input").prop('disabled', false);
     var $tweet = $('<li>');

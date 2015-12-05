@@ -12,6 +12,7 @@ function TweetCompose(el) {
 
 
 
+
 TweetCompose.prototype.registerEvent = function () {
   this.$content.on("input", this.handleInput.bind(this));
   this.$el.on("submit", this.handleSubmit.bind(this));
